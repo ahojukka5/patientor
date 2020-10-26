@@ -1,6 +1,5 @@
-import React from "react";
-import axios from "axios";
-import { Container, Table, Button } from "semantic-ui-react";
+import { useHistory } from 'react-router-dom';
+import { Container, Table, Button } from 'semantic-ui-react';
 
 import { PatientFormValues } from "../AddPatientModal/AddPatientForm";
 import AddPatientModal from "../AddPatientModal";
