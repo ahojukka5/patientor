@@ -39,7 +39,6 @@ const PatientListPage: React.FC = () => {
 
   const clickHandler = (patient: Patient) => {
     return () => {
-      console.log('clicked ' + patient.id);
       history.push(`/patients/${patient.id}`);
     };
   };
