@@ -1,12 +1,14 @@
+import React from 'react';
+import axios from 'axios';
 import { useHistory } from 'react-router-dom';
 import { Container, Table, Button } from 'semantic-ui-react';
 
-import { PatientFormValues } from "../AddPatientModal/AddPatientForm";
-import AddPatientModal from "../AddPatientModal";
-import { Patient } from "../types";
-import { apiBaseUrl } from "../constants";
-import HealthRatingBar from "../components/HealthRatingBar";
-import { useStateValue } from "../state";
+import { PatientFormValues } from '../AddPatientModal/AddPatientForm';
+import AddPatientModal from '../AddPatientModal';
+import { Patient } from '../types';
+import { apiBaseUrl } from '../constants';
+import HealthRatingBar from '../components/HealthRatingBar';
+import { useStateValue } from '../state';
 
 const PatientListPage: React.FC = () => {
   const [{ patients }, dispatch] = useStateValue();
@@ -27,7 +29,7 @@ const PatientListPage: React.FC = () => {
         `${apiBaseUrl}/patients`,
         values
       );
-      dispatch({ type: "ADD_PATIENT", payload: newPatient });
+      dispatch({ type: 'ADD_PATIENT', payload: newPatient });
       closeModal();
     } catch (e) {
       console.error(e.response.data);
@@ -37,6 +39,7 @@ const PatientListPage: React.FC = () => {
 
   const clickHandler = (patient: Patient) => {
     return () => {
+      console.log('clicked ' + patient.id);
       history.push(`/patients/${patient.id}`);
     };
   };
