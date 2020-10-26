@@ -1,7 +1,10 @@
 import React from 'react';
+import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import { useStateValue } from '../state';
 import { Icon } from 'semantic-ui-react';
+import { apiBaseUrl } from '../constants';
+import { Patient } from '../types';
 
 const GenderIcon: React.FC<{ gender: string }> = ({ gender }) => {
   switch (gender) {
@@ -34,6 +37,20 @@ const PatientDetailPage: React.FC = () => {
 
   if (!patient) {
     return loading();
+  }
+
+  const fetchPatientDetails = async (id: string) => {
+    try {
+      const uri = `${apiBaseUrl}/patients/${id}`;
+      const { data: patientDetailsFromApi } = await axios.get<Patient>(uri);
+      dispatch({ type: 'ADD_PATIENT', payload: patientDetailsFromApi });
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+  if (!patient.ssn) {
+    fetchPatientDetails(id);
   }
 
   return (
