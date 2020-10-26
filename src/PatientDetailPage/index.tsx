@@ -1,7 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
-import { useStateValue } from '../state';
+import { useStateValue, addPatient } from '../state';
 import { Icon } from 'semantic-ui-react';
 import { apiBaseUrl } from '../constants';
 import { Patient } from '../types';
@@ -24,7 +24,6 @@ interface ParamTypes {
 }
 
 const PatientDetailPage: React.FC = () => {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [{ patients }, dispatch] = useStateValue();
   const { id } = useParams<ParamTypes>();
   const patient = patients[id];
@@ -43,7 +42,7 @@ const PatientDetailPage: React.FC = () => {
     try {
       const uri = `${apiBaseUrl}/patients/${id}`;
       const { data: patientDetailsFromApi } = await axios.get<Patient>(uri);
-      dispatch({ type: 'ADD_PATIENT', payload: patientDetailsFromApi });
+      dispatch(addPatient(patientDetailsFromApi));
     } catch (e) {
       console.error(e);
     }
