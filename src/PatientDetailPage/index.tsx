@@ -4,9 +4,9 @@ import { useParams } from 'react-router-dom';
 import { useStateValue, addPatient } from '../state';
 import { Icon } from 'semantic-ui-react';
 import { apiBaseUrl } from '../constants';
-import { Patient } from '../types';
+import { Patient, Gender, Entry, Diagnosis } from '../types';
 
-const GenderIcon: React.FC<{ gender: string }> = ({ gender }) => {
+const GenderIcon: React.FC<{ gender: Gender }> = ({ gender }) => {
   switch (gender) {
     case 'male':
       return <Icon name="mars" />;
@@ -14,18 +14,40 @@ const GenderIcon: React.FC<{ gender: string }> = ({ gender }) => {
       return <Icon name="venus" />;
     case 'other':
       return <Icon name="genderless" />;
+    default:
+      return <Icon name="genderless" />;
   }
-  return <Icon name="genderless" />;
 };
 
-// https://stackoverflow.com/questions/59085911/required-url-param-on-react-router-v5-with-typescript-can-be-undefined
-interface ParamTypes {
-  id: string;
-}
+const OneEntry: React.FC<Entry> = (entry) => {
+  console.log(entry);
+  return (
+    <div>
+      <div>
+        {entry.date} {entry.description}
+      </div>
+      <ul>
+        {entry.diagnosisCodes?.map((code: Diagnosis['code']) => (
+          <li key={code}>{code}</li>
+        ))}
+      </ul>
+    </div>
+  );
+};
+
+const Entries: React.FC<{ entries: Entry[] }> = ({ entries }) => {
+  return (
+    <div>
+      {entries.map((entry: Entry) => (
+        <OneEntry key={entry.id} {...entry} />
+      ))}
+    </div>
+  );
+};
 
 const PatientDetailPage: React.FC = () => {
   const [{ patients }, dispatch] = useStateValue();
-  const { id } = useParams<ParamTypes>();
+  const { id } = useParams<{ id: string }>();
   const patient = patients[id];
 
   const loading = () => (
@@ -42,6 +64,7 @@ const PatientDetailPage: React.FC = () => {
     try {
       const uri = `${apiBaseUrl}/patients/${id}`;
       const { data: patientDetailsFromApi } = await axios.get<Patient>(uri);
+      // console.log(patientDetailsFromApi);
       dispatch(addPatient(patientDetailsFromApi));
     } catch (e) {
       console.error(e);
@@ -57,8 +80,10 @@ const PatientDetailPage: React.FC = () => {
       <h1>
         {patient.name} <GenderIcon gender={patient.gender} />
       </h1>
-      <div>ssn: {patient.ssn ? patient.ssn : loading()}</div>
+      <div>ssn: {patient.ssn || loading()}</div>
       <div>occupation: {patient.occupation}</div>
+      <h2>Entries</h2>
+      {patient.entries ? <Entries entries={patient.entries} /> : loading()}
     </div>
   );
 };
