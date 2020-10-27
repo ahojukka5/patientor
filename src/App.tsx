@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Route, Link, Switch } from 'react-router-dom';
 import { Button, Divider, Header, Container } from 'semantic-ui-react';
 
 import { apiBaseUrl } from './constants';
-import { useStateValue, setPatientList, setDiagnosisList as setDiagnosisList } from './state';
+import { useStateValue, setPatientList, setDiagnosisList } from './state';
 import { Patient, Diagnosis } from './types';
 
 import PatientListPage from './PatientListPage';
