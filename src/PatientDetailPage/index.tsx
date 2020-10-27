@@ -20,7 +20,9 @@ const GenderIcon: React.FC<{ gender: Gender }> = ({ gender }) => {
 };
 
 const OneEntry: React.FC<Entry> = (entry) => {
-  console.log(entry);
+  // console.log(entry);
+  const [{ diagnoses }] = useStateValue();
+  // console.log(diagnoses);
   return (
     <div>
       <div>
@@ -28,7 +30,7 @@ const OneEntry: React.FC<Entry> = (entry) => {
       </div>
       <ul>
         {entry.diagnosisCodes?.map((code: Diagnosis['code']) => (
-          <li key={code}>{code}</li>
+          <li key={code}>{code} {diagnoses[code].name}</li>
         ))}
       </ul>
     </div>
