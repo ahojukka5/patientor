@@ -4,8 +4,10 @@ import { useParams } from 'react-router-dom';
 import { useStateValue, addPatient } from '../state';
 import { Icon, Header, Loader, Dimmer, Button } from 'semantic-ui-react';
 
+import AddPatientEntryModal from '../AddPatientEntryModal';
+
 import { apiBaseUrl } from '../constants';
-import { Patient, Gender } from '../types';
+import { Patient, Gender, Entry, NewEntry } from '../types';
 
 import Entries from './Entries';
 
@@ -25,8 +27,11 @@ const GenderIcon: React.FC<{ gender: Gender }> = ({ gender }) => {
 const PatientDetailPage: React.FC = () => {
   const [{ patients }, dispatch] = useStateValue();
   const { id } = useParams<{ id: string }>();
-  const patient = patients[id];
+  const [modalOpen, setModalOpen] = React.useState<boolean>(false);
+  const [error, setError] = React.useState<string | undefined>();
 
+  // First check do we have patient data, it not, render loading
+  const patient = patients[id];
   if (!patient) {
     return (
       <Dimmer active inverted>
@@ -50,6 +55,26 @@ const PatientDetailPage: React.FC = () => {
     fetchPatientDetails(id);
   }
 
+  const openModal = (): void => setModalOpen(true);
+
+  const closeModal = (): void => {
+    setModalOpen(false);
+    setError(undefined);
+  };
+
+  const submitNewPatientEntry = async (values: NewEntry) => {
+    try {
+      const uri = `${apiBaseUrl}/patients/${id}/entries`;
+      const { data: newEntry } = await axios.post<Entry>(uri, values);
+      patient.entries.push(newEntry);
+      dispatch(addPatient(patient));
+      closeModal();
+    } catch (e) {
+      console.error(e.response.data);
+      setError(e.response.data.error);
+    }
+  };
+
   return (
     <div className="App">
       {!patient.ssn ? (
@@ -68,6 +93,13 @@ const PatientDetailPage: React.FC = () => {
       ) : (
         'Waiting for data ...'
       )}
+      <AddPatientEntryModal
+        modalOpen={modalOpen}
+        onSubmit={submitNewPatientEntry}
+        error={error}
+        onClose={closeModal}
+      />
+      <Button onClick={() => openModal()}>Add new entry</Button>
     </div>
   );
 };
