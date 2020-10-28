@@ -77,6 +77,10 @@ const getInitialValues = (): NewHealthCheckEntry => {
   };
 };
 
+const isDate = (date: string): boolean => {
+  return Boolean(Date.parse(date));
+};
+
 const validateForm = (values: NewHealthCheckEntry) => {
   const requiredError = 'Field is required';
   const errors: { [field: string]: string } = {};
@@ -91,6 +95,9 @@ const validateForm = (values: NewHealthCheckEntry) => {
   }
   if (!values.specialist) {
     errors.specialist = requiredError;
+  }
+  if (values.date && !isDate(values.date)) {
+    errors.date = 'Date must given in form YYYY-MM-DD';
   }
   return errors;
 };
