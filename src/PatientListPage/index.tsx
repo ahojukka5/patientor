@@ -6,7 +6,7 @@ import { Container, Table, Button } from 'semantic-ui-react';
 import { PatientFormValues } from '../AddPatientModal/AddPatientForm';
 import AddPatientModal from '../AddPatientModal';
 import { Patient } from '../types';
-import { apiBaseUrl } from '../constants';
+import constants from '../constants';
 import HealthRatingBar from '../components/HealthRatingBar';
 import { addPatient, useStateValue } from '../state';
 
@@ -26,7 +26,7 @@ const PatientListPage: React.FC = () => {
   const submitNewPatient = async (values: PatientFormValues) => {
     try {
       const { data: newPatient } = await axios.post<Patient>(
-        `${apiBaseUrl}/patients`,
+        `${constants.apiBaseUrl}/patients`,
         values
       );
       dispatch(addPatient(newPatient));

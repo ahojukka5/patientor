@@ -4,7 +4,7 @@ import { useParams } from 'react-router-dom';
 import { useStateValue, addPatient } from '../state';
 import { Icon, Header, Loader, Dimmer, Button } from 'semantic-ui-react';
 
-import { apiBaseUrl } from '../constants';
+import constants from '../constants';
 import { Patient, Gender, Entry, NewEntry } from '../types';
 
 import Entries from './Entries';
@@ -49,7 +49,7 @@ const PatientDetailPage: React.FC = () => {
 
   const fetchPatientDetails = async (id: string) => {
     try {
-      const uri = `${apiBaseUrl}/patients/${id}`;
+      const uri = `${constants.apiBaseUrl}/patients/${id}`;
       const { data: patientDetailsFromApi } = await axios.get<Patient>(uri);
       // console.log(patientDetailsFromApi);
       dispatch(addPatient(patientDetailsFromApi));
@@ -73,7 +73,7 @@ const PatientDetailPage: React.FC = () => {
 
   const submitNewPatientEntry = async (values: NewEntry) => {
     try {
-      const uri = `${apiBaseUrl}/patients/${id}/entries`;
+      const uri = `${constants.apiBaseUrl}/patients/${id}/entries`;
       const { data: newEntry } = await axios.post<Entry>(uri, values);
       patient.entries.push(newEntry);
       dispatch(addPatient(patient));
