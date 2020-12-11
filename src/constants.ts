@@ -5,7 +5,7 @@ declare const process: {
 };
 
 const prod = {
-  apiBaseUrl: 'https://patientor-backend.eu-gb.mybluemix.net',
+  apiBaseUrl: 'https://ahojukka5-patientor-backend.eu-gb.mybluemix.net/api',
 };
 
 const dev = {
