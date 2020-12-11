@@ -1,0 +1,12 @@
+applications:
+- name: patientor
+  path: ./build
+  buildpacks:
+  - staticfile_buildpack
+  disk_quota: 64M
+  instances: 1
+  memory: 64M
+  routes:
+  - route: ahojukka5-patientor.eu-gb.mybluemix.net
+  - route: patientor.ahojukka5.com
+  stack: cflinuxfs3
