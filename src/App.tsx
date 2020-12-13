@@ -29,20 +29,21 @@ const App: React.FC = () => {
     const fetchDiagnoses = async () => {
       try {
         const uri = `${constants.apiBaseUrl}/diagnoses`;
-        const { data: diagnosisListFromApi } = await axios.get<Diagnosis[]>(uri);
+        const { data: diagnosisListFromApi } = await axios.get<Diagnosis[]>(
+          uri
+        );
         dispatch(setDiagnosisList(diagnosisListFromApi));
       } catch (e) {
         console.error(e);
       }
     };
     fetchDiagnoses();
-
   }, [dispatch]);
 
   return (
-    <div className="App">
+    <div className="App" style={{ paddingTop: '3em' }}>
       <Router>
-        <Container>
+        <Container text>
           <Header as="h1">Patientor</Header>
           <Button as={Link} to="/" primary>
             Home
