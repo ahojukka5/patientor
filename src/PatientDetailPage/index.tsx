@@ -8,10 +8,8 @@ import constants from '../constants';
 import { Patient, Gender, Entry, NewEntry } from '../types';
 
 import Entries from './Entries';
-import {
-  AddPatientEntryModalHealthCheck,
-  AddPatientEntryModalHospital,
-} from '../AddPatientEntryModal';
+import { AddPatientEntryModalHealthCheck } from '../AddPatientEntryModal';
+import { AddPatientEntryModalHospital } from '../AddPatientEntryModal/HospitalForm';
 
 const GenderIcon: React.FC<{ gender: Gender }> = ({ gender }) => {
   switch (gender) {
@@ -29,9 +27,10 @@ const GenderIcon: React.FC<{ gender: Gender }> = ({ gender }) => {
 const PatientDetailPage: React.FC = () => {
   const [{ patients }, dispatch] = useStateValue();
   const { id } = useParams<{ id: string }>();
-  const [modalHealthCheckOpen, setModalHealthCheckOpen] = React.useState<
-    boolean
-  >(false);
+  const [
+    modalHealthCheckOpen,
+    setModalHealthCheckOpen,
+  ] = React.useState<boolean>(false);
   const [modalHospitalOpen, setModalHospitalOpen] = React.useState<boolean>(
     false
   );
