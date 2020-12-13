@@ -8,13 +8,18 @@ import {
   Form,
   Grid,
   Header,
-  Input,
   Modal,
   Radio,
   Segment,
 } from 'semantic-ui-react';
 import { useStateValue } from '../state';
-import { HealthCheckRating, NewEntry } from '../types';
+import {
+  HealthCheckRating,
+  NewEntry,
+  NewHealthCheckEntry,
+  NewHospitalEntry,
+  NewOccupationalHealthcareEntry,
+} from '../types';
 import { isDate, isEmpty } from '../utils';
 
 interface FormValues {
@@ -129,6 +134,65 @@ const validate = (values: FormValues) => {
   return errors;
 };
 
+const toBackend = (values: FormValues): NewEntry | { status: string } => {
+  const {
+    date,
+    specialist,
+    description,
+    type,
+    diagnosisCodes,
+    healthCheckRating,
+    discharge,
+    employerName,
+    sickLeave,
+  } = values;
+  if (!isEmpty(validate(values)) || type === '') {
+    return { status: 'Form validation failed.' };
+  }
+
+  if (type === 'HealthCheck') {
+    const entry: NewHealthCheckEntry = {
+      type: 'HealthCheck',
+      date,
+      specialist,
+      description,
+      healthCheckRating,
+    };
+    return entry;
+  }
+
+  if (type === 'Hospital') {
+    const entry: NewHospitalEntry = {
+      type: 'Hospital',
+      date,
+      specialist,
+      description,
+      discharge,
+    };
+    if (diagnosisCodes && diagnosisCodes.length !== 0) {
+      entry.diagnosisCodes = diagnosisCodes;
+    }
+    return entry;
+  }
+
+  if (type === 'OccupationalHealthcare') {
+    const entry: NewOccupationalHealthcareEntry = {
+      type: 'OccupationalHealthcare',
+      date,
+      specialist,
+      description,
+      employerName,
+      sickLeave,
+    };
+    if (diagnosisCodes && diagnosisCodes.length !== 0) {
+      entry.diagnosisCodes = diagnosisCodes;
+    }
+    return entry;
+  }
+
+  return { status: 'Multifail, you should ne be here at all.' };
+};
+
 const useDiagnoses = () => {
   const [{ diagnoses }] = useStateValue();
   const stateOptions = Object.values(diagnoses).map((diagnosis) => {
@@ -146,18 +210,20 @@ export interface FormProps {
   onCancel: () => void;
 }
 
-export const NewEntryForm: React.FC<FormProps> = ({ onCancel }) => {
+export const NewEntryForm: React.FC<FormProps> = (props) => {
+  const { onCancel } = props;
   const formik = useFormik({
     initialValues: getInitialValues(),
     validate,
-    onSubmit: (values) => {
-      alert(JSON.stringify(values, null, 2));
+    onSubmit: (values: FormValues) => {
+      const entry = toBackend(values) as NewEntry;
+      props.onSubmit(entry);
     },
     validateOnChange: false,
     validateOnBlur: false,
   });
   const diagnoses = useDiagnoses();
-  const json = JSON.stringify(formik.values, null, 2);
+  const json = JSON.stringify(toBackend(formik.values), null, 2);
 
   return (
     <Form onSubmit={formik.handleSubmit}>
@@ -343,7 +409,7 @@ export const AddPatientEntryModal = ({
   error,
 }: ModalProps) => (
   <Modal
-    open={modalOpen || !modalOpen}
+    open={modalOpen}
     onClose={onClose}
     centered={false}
     closeIcon
