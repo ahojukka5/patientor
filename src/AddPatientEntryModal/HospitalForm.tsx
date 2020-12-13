@@ -1,10 +1,11 @@
 import React from 'react';
 import { Field, Formik, Form, FormikProps } from 'formik';
 import { Button, Grid, Modal, Segment } from 'semantic-ui-react';
-import { TextField, DiagnosisSelection } from '../AddPatientModal/FormField';
+import { DiagnosisSelection } from '../AddPatientModal/FormField';
 import { NewHospitalEntry, Diagnosis } from '../types';
 import { useStateValue } from '../state';
 import { isDate } from '../utils';
+import { TextField } from '../components/TextField';
 
 interface PureHospitalFormProps {
   dirty: boolean;
