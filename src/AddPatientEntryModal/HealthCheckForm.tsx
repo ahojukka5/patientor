@@ -56,7 +56,7 @@ export const PureHealthCheckForm: React.FC<PureHealthCheckFormProps> = ({
   </Form>
 );
 
-interface HealthCheckFormProps {
+export interface HealthCheckFormProps {
   onSubmit: (values: NewHealthCheckEntry) => void;
   onCancel: () => void;
 }

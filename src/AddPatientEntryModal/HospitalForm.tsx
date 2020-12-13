@@ -1,6 +1,6 @@
 import React from 'react';
 import { Field, Formik, Form, FormikProps } from 'formik';
-import { Button, Grid, Modal, Segment } from 'semantic-ui-react';
+import { Button, Grid } from 'semantic-ui-react';
 import { DiagnosisSelection } from '../AddPatientModal/FormField';
 import { NewHospitalEntry, Diagnosis } from '../types';
 import { useStateValue } from '../state';
@@ -68,7 +68,7 @@ export const PureHospitalForm: React.FC<PureHospitalFormProps> = ({
   </Form>
 );
 
-interface HospitalFormProps {
+export interface HospitalFormProps {
   onSubmit: (values: NewHospitalEntry) => void;
   onCancel: () => void;
 }
@@ -128,25 +128,3 @@ export const HospitalForm: React.FC<HospitalFormProps> = ({
     </Formik>
   );
 };
-
-interface PatientEntryModalHospitalProps {
-  modalOpen: boolean;
-  onClose: () => void;
-  onSubmit: (values: NewHospitalEntry) => void;
-  error?: string;
-}
-
-export const AddPatientEntryModalHospital = ({
-  modalOpen,
-  onClose,
-  onSubmit,
-  error,
-}: PatientEntryModalHospitalProps) => (
-  <Modal open={modalOpen} onClose={onClose} centered={false} closeIcon>
-    <Modal.Header>Add a new entry (hospital)</Modal.Header>
-    <Modal.Content>
-      {error && <Segment inverted color="red">{`Error: ${error}`}</Segment>}
-      <HospitalForm onSubmit={onSubmit} onCancel={onClose} />
-    </Modal.Content>
-  </Modal>
-);
