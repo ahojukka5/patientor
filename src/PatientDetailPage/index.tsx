@@ -8,7 +8,7 @@ import constants from '../constants';
 import { Patient, Gender, Entry, NewEntry } from '../types';
 
 import Entries from './Entries';
-import { AddPatientEntryModalHealthCheck } from '../AddPatientEntryModal';
+import { AddPatientEntryModalHealthCheck } from '../AddPatientEntryModal/HealthCheckForm';
 import { AddPatientEntryModalHospital } from '../AddPatientEntryModal/HospitalForm';
 
 const GenderIcon: React.FC<{ gender: Gender }> = ({ gender }) => {
