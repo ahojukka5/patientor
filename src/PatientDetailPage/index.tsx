@@ -8,8 +8,7 @@ import constants from '../constants';
 import { Patient, Gender, Entry, NewEntry } from '../types';
 
 import Entries from './Entries';
-import { AddPatientEntryModalHealthCheck } from '../AddPatientEntryModal/HealthCheckForm';
-import { AddPatientEntryModalHospital } from '../AddPatientEntryModal/HospitalForm';
+import { AddPatientEntryModal } from '../AddPatientEntryModal';
 
 const GenderIcon: React.FC<{ gender: Gender }> = ({ gender }) => {
   switch (gender) {
@@ -27,13 +26,7 @@ const GenderIcon: React.FC<{ gender: Gender }> = ({ gender }) => {
 const PatientDetailPage: React.FC = () => {
   const [{ patients }, dispatch] = useStateValue();
   const { id } = useParams<{ id: string }>();
-  const [
-    modalHealthCheckOpen,
-    setModalHealthCheckOpen,
-  ] = React.useState<boolean>(false);
-  const [modalHospitalOpen, setModalHospitalOpen] = React.useState<boolean>(
-    false
-  );
+  const [modalOpen, setModalOpen] = React.useState<boolean>(false);
   const [error, setError] = React.useState<string | undefined>();
 
   // First check do we have patient data, it not, render loading
@@ -50,7 +43,6 @@ const PatientDetailPage: React.FC = () => {
     try {
       const uri = `${constants.apiBaseUrl}/patients/${id}`;
       const { data: patientDetailsFromApi } = await axios.get<Patient>(uri);
-      // console.log(patientDetailsFromApi);
       dispatch(addPatient(patientDetailsFromApi));
     } catch (e) {
       console.error(e);
@@ -61,12 +53,10 @@ const PatientDetailPage: React.FC = () => {
     fetchPatientDetails(id);
   }
 
-  const openModalHealthCheck = (): void => setModalHealthCheckOpen(true);
-  const openModalHospital = (): void => setModalHospitalOpen(true);
+  const openModal = (): void => setModalOpen(true);
 
   const closeModal = (): void => {
-    setModalHealthCheckOpen(false);
-    setModalHospitalOpen(false);
+    setModalOpen(false);
     setError(undefined);
   };
 
@@ -101,24 +91,13 @@ const PatientDetailPage: React.FC = () => {
       ) : (
         'Waiting for data ...'
       )}
-      <AddPatientEntryModalHealthCheck
-        modalOpen={modalHealthCheckOpen}
+      <AddPatientEntryModal
+        modalOpen={modalOpen}
         onSubmit={submitNewPatientEntry}
         error={error}
         onClose={closeModal}
       />
-      <AddPatientEntryModalHospital
-        modalOpen={modalHospitalOpen}
-        onSubmit={submitNewPatientEntry}
-        error={error}
-        onClose={closeModal}
-      />
-      <Button onClick={() => openModalHealthCheck()}>
-        Add new entry (health check)
-      </Button>
-      <Button onClick={() => openModalHospital()}>
-        Add new entry (hospital)
-      </Button>
+      <Button onClick={() => openModal()}>Add new entry</Button>
     </div>
   );
 };

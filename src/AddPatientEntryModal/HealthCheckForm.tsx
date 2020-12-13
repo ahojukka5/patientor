@@ -1,6 +1,6 @@
 import React from 'react';
 import { Field, Formik, Form } from 'formik';
-import { Button, Grid, Modal, Segment } from 'semantic-ui-react';
+import { Button, Grid } from 'semantic-ui-react';
 import { NumberField, TextField } from '../AddPatientModal/FormField';
 import { NewHealthCheckEntry, HealthCheckRating } from '../types';
 import { isDate } from '../utils';
@@ -112,30 +112,3 @@ export const HealthCheckForm: React.FC<HealthCheckFormProps> = ({
     </Formik>
   );
 };
-
-interface PatientEntryModalHealthCheckProps {
-  modalOpen: boolean;
-  onClose: () => void;
-  onSubmit: (values: NewHealthCheckEntry) => void;
-  error?: string;
-}
-
-export const AddPatientEntryModalHealthCheck = ({
-  modalOpen,
-  onClose,
-  onSubmit,
-  error,
-}: PatientEntryModalHealthCheckProps) => (
-  <Modal
-    open={modalOpen || !modalOpen}
-    onClose={onClose}
-    centered={false}
-    closeIcon
-  >
-    <Modal.Header>Add a new entry</Modal.Header>
-    <Modal.Content>
-      {error && <Segment inverted color="red">{`Error: ${error}`}</Segment>}
-      <HealthCheckForm onSubmit={onSubmit} onCancel={onClose} />
-    </Modal.Content>
-  </Modal>
-);
