@@ -15,6 +15,7 @@ import {
 } from 'semantic-ui-react';
 import { useStateValue } from '../state';
 import { HealthCheckRating, NewEntry } from '../types';
+import { isDate, isEmpty } from '../utils';
 
 interface FormValues {
   date: string;
@@ -55,11 +56,65 @@ const getInitialValues = (): FormValues => {
 };
 
 const validate = (values: FormValues) => {
-  console.log('validate', values);
-  const errors: { [field: string]: string } = {};
-  if (!values.specialist) {
-    errors.specialist = 'This field is required.';
+  const errors: { [field: string]: string | { [field: string]: string } } = {};
+  const required = 'This field is required.';
+  if (!values.date) {
+    errors.date = required;
   }
+  if (!isDate(values.date)) {
+    errors.date = 'Date is incorrect.';
+  }
+  if (!values.specialist) {
+    errors.specialist = required;
+  }
+  if (!values.description) {
+    errors.description = required;
+  }
+  if (!values.type) {
+    errors.type = 'Choose one of the options.';
+  }
+  if (!values.healthCheckRating) {
+    errors.healthCheckRating = required;
+  }
+
+  const dischargeErrors: { [field: string]: string } = {};
+  if (!values.discharge.date) {
+    dischargeErrors.date = required;
+  } else {
+    if (!isDate(values.discharge.date)) {
+      dischargeErrors.date = 'Date is incorrect';
+    }
+  }
+  if (!values.discharge.criteria) {
+    dischargeErrors.criteria = required;
+  }
+  if (!isEmpty(dischargeErrors)) {
+    errors.discharge = dischargeErrors;
+  }
+
+  if (!values.employerName) {
+    errors.employerName = required;
+  }
+
+  const sickLeaveErrors: { [field: string]: string } = {};
+  if (!values.sickLeave.startDate) {
+    sickLeaveErrors.startDate = required;
+  } else {
+    if (!isDate(values.sickLeave.startDate)) {
+      sickLeaveErrors.startDate = 'Date is incorrect';
+    }
+  }
+  if (!values.sickLeave.endDate) {
+    sickLeaveErrors.endDate = required;
+  } else {
+    if (!isDate(values.sickLeave.endDate)) {
+      sickLeaveErrors.endDate = 'Date is incorrect';
+    }
+  }
+  if (!isEmpty(sickLeaveErrors)) {
+    errors.sickLeave = sickLeaveErrors;
+  }
+
   return errors;
 };
 
@@ -92,37 +147,38 @@ export const NewEntryForm: React.FC<FormProps> = ({ onCancel }) => {
   });
   const diagnoses = useDiagnoses();
   const json = JSON.stringify(formik.values, null, 2);
-  console.log(json);
 
   return (
     <Form onSubmit={formik.handleSubmit}>
       <Header as="h4">General information</Header>
       <Form.Field required>
         <label>Date</label>
-        <Input
+        <Form.Input
           name="date"
           placeholder="YYYY-MM-DD"
           onChange={formik.handleChange}
           value={formik.values.date}
+          error={formik.errors.date}
         />
-        <Form.Field />
       </Form.Field>
       <Form.Field required>
         <label>Specialist</label>
-        <Input
+        <Form.Input
           name="specialist"
           placeholder="Specialist"
           onChange={formik.handleChange}
           value={formik.values.specialist}
+          error={formik.errors.specialist}
         />
       </Form.Field>
       <Form.Field required>
         <label>Description</label>
-        <Input
+        <Form.Input
           name="description"
           placeholder="Description"
           onChange={formik.handleChange}
           value={formik.values.description}
+          error={formik.errors.description}
         />
       </Form.Field>
       <Form.Group inline>
@@ -135,6 +191,7 @@ export const NewEntryForm: React.FC<FormProps> = ({ onCancel }) => {
           value="HealthCheck"
           onChange={formik.handleChange}
           checked={formik.values.type === 'HealthCheck'}
+          error={!!formik.errors.type}
         />
         <Form.Field
           control={Radio}
@@ -144,6 +201,7 @@ export const NewEntryForm: React.FC<FormProps> = ({ onCancel }) => {
           value="Hospital"
           onChange={formik.handleChange}
           checked={formik.values.type === 'Hospital'}
+          error={!!formik.errors.type}
         />
         <Form.Field
           control={Radio}
@@ -153,21 +211,23 @@ export const NewEntryForm: React.FC<FormProps> = ({ onCancel }) => {
           value="OccupationalHealthcare"
           onChange={formik.handleChange}
           checked={formik.values.type === 'OccupationalHealthcare'}
+          error={formik.errors.type}
         />
       </Form.Group>
       <Divider />
       <Form.Field required>
         <label>Health check rating</label>
-        <Input
+        <Form.Input
           name="healthCheckRating"
           type="number"
           min={0}
           max={3}
           onChange={formik.handleChange}
           value={formik.values.healthCheckRating}
+          error={formik.errors.healthCheckRating}
         />
       </Form.Field>
-      <Form.Field required>
+      <Form.Field>
         <label>Diagnoses</label>
         <Dropdown
           id="diagnosisCodes"
@@ -185,49 +245,54 @@ export const NewEntryForm: React.FC<FormProps> = ({ onCancel }) => {
       <Header as="h4">Discharge</Header>
       <Form.Field required>
         <label>Date</label>
-        <Input
+        <Form.Input
           name="discharge['date']"
           placeholder="YYYY-MM-DD"
           onChange={formik.handleChange}
           value={formik.values.discharge.date}
+          error={formik.errors.discharge && formik.errors.discharge.date}
         />
       </Form.Field>
       <Form.Field required>
         <label>Criteria</label>
-        <Input
+        <Form.Input
           name="discharge['criteria']"
           placeholder="Criteria"
           onChange={formik.handleChange}
           value={formik.values.discharge.criteria}
+          error={formik.errors.discharge && formik.errors.discharge.criteria}
         />
       </Form.Field>
       <Form.Field required>
         <label>Employer</label>
-        <Input
+        <Form.Input
           name="employerName"
           placeholder="Employer"
           onChange={formik.handleChange}
           value={formik.values.employerName}
+          error={formik.errors.employerName}
         />
       </Form.Field>
       <Form.Field control={Checkbox} label="Sick leave" />
       <Form.Group inline>
         <Form.Field required>
           <label>Start date</label>
-          <Input
+          <Form.Input
             name="sickLeave['startDate']"
             placeholder="YYYY-MM-DD"
             onChange={formik.handleChange}
             value={formik.values.sickLeave.startDate}
+            error={formik.errors.sickLeave && formik.errors.sickLeave.startDate}
           />
         </Form.Field>
         <Form.Field required>
           <label>End date</label>
-          <Input
+          <Form.Input
             name="sickLeave['endDate']"
             placeholder="YYYY-MM-DD"
             onChange={formik.handleChange}
             value={formik.values.sickLeave.endDate}
+            error={formik.errors.sickLeave && formik.errors.sickLeave.endDate}
           />
         </Form.Field>
       </Form.Group>
