@@ -14,15 +14,27 @@ import {
   Segment,
 } from 'semantic-ui-react';
 import { useStateValue } from '../state';
-import {
-  HealthCheckRating,
-  NewHealthCheckEntry,
-  NewHospitalEntry,
-} from '../types';
+import { HealthCheckRating, NewEntry } from '../types';
 
-type NewEntry = NewHealthCheckEntry | NewHospitalEntry;
+interface FormValues {
+  date: string;
+  specialist: string;
+  description: string;
+  type: '' | 'HealthCheck' | 'Hospital' | 'OccupationalHealthcare';
+  diagnosisCodes?: string[];
+  healthCheckRating: HealthCheckRating;
+  discharge: {
+    date: string;
+    criteria: string;
+  };
+  employerName: string;
+  sickLeave: {
+    startDate: string;
+    endDate: string;
+  };
+}
 
-const getInitialValues = () => {
+const getInitialValues = (): FormValues => {
   return {
     date: new Date().toISOString().slice(0, 10),
     specialist: '',
@@ -40,6 +52,15 @@ const getInitialValues = () => {
       endDate: '',
     },
   };
+};
+
+const validate = (values: FormValues) => {
+  console.log('validate', values);
+  const errors: { [field: string]: string } = {};
+  if (!values.specialist) {
+    errors.specialist = 'This field is required.';
+  }
+  return errors;
 };
 
 const useDiagnoses = () => {
@@ -62,9 +83,12 @@ export interface FormProps {
 export const NewEntryForm: React.FC<FormProps> = ({ onCancel }) => {
   const formik = useFormik({
     initialValues: getInitialValues(),
+    validate,
     onSubmit: (values) => {
       alert(JSON.stringify(values, null, 2));
     },
+    validateOnChange: false,
+    validateOnBlur: false,
   });
   const diagnoses = useDiagnoses();
   const json = JSON.stringify(formik.values, null, 2);
@@ -242,7 +266,12 @@ export const AddPatientEntryModal = ({
   onClose,
   error,
 }: ModalProps) => (
-  <Modal open={modalOpen} onClose={onClose} centered={false} closeIcon>
+  <Modal
+    open={modalOpen || !modalOpen}
+    onClose={onClose}
+    centered={false}
+    closeIcon
+  >
     <Modal.Header>Add a new entry</Modal.Header>
     <Modal.Content>
       {error && <Segment inverted color="red">{`Error: ${error}`}</Segment>}
