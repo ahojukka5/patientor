@@ -89,8 +89,12 @@ const validate = (values: FormValues) => {
   // Validations for HealthCheck option
 
   if (values.type === 'HealthCheck') {
-    if (!values.healthCheckRating) {
+    if (values.healthCheckRating === undefined) {
       errors.healthCheckRating = required;
+    } else if (
+      !Object.values(HealthCheckRating).includes(values.healthCheckRating)
+    ) {
+      errors.healthCheckRating = 'Rating is incorrect (select 0, 1, 2, 3).';
     }
   }
 
