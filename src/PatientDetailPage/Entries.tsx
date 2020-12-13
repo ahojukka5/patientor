@@ -12,7 +12,6 @@ import HealthRatingBar from '../components/HealthRatingBar';
 
 const HospitalEntryDetails: React.FC<HospitalEntry> = (entry) => {
   const [{ diagnoses }] = useStateValue();
-  console.log(entry);
   const diagstr = entry.diagnosisCodes
     ?.map((code) => `${code} (${diagnoses[code].name})`)
     .join(', ');
@@ -42,7 +41,6 @@ const OccupationalHealthcareEntryDetails: React.FC<OccupationalHealthcareEntry> 
   entry
 ) => {
   const [{ diagnoses }] = useStateValue();
-  console.log(entry);
   const diagstr = entry.diagnosisCodes
     ?.map((code) => `${code} (${diagnoses[code].name})`)
     .join(', ');
@@ -71,7 +69,6 @@ const OccupationalHealthcareEntryDetails: React.FC<OccupationalHealthcareEntry> 
 };
 
 const HealthCheckEntryDetails: React.FC<HealthCheckEntry> = (entry) => {
-  console.log(entry);
   return (
     <Item.Content>
       <Item.Header as="h3">
