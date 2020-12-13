@@ -58,6 +58,9 @@ const getInitialValues = (): FormValues => {
 const validate = (values: FormValues) => {
   const errors: { [field: string]: string | { [field: string]: string } } = {};
   const required = 'This field is required.';
+
+  // Validations for common fields
+
   if (!values.date) {
     errors.date = required;
   }
@@ -73,46 +76,54 @@ const validate = (values: FormValues) => {
   if (!values.type) {
     errors.type = 'Choose one of the options.';
   }
-  if (!values.healthCheckRating) {
-    errors.healthCheckRating = required;
+
+  if (!values.type) {
+    return errors;
   }
 
-  const dischargeErrors: { [field: string]: string } = {};
-  if (!values.discharge.date) {
-    dischargeErrors.date = required;
-  } else {
-    if (!isDate(values.discharge.date)) {
-      dischargeErrors.date = 'Date is incorrect';
+  // Validations for HealthCheck option
+
+  if (values.type === 'HealthCheck') {
+    if (!values.healthCheckRating) {
+      errors.healthCheckRating = required;
     }
   }
-  if (!values.discharge.criteria) {
-    dischargeErrors.criteria = required;
-  }
-  if (!isEmpty(dischargeErrors)) {
-    errors.discharge = dischargeErrors;
+
+  // Validations for Hospital option
+
+  if (values.type === 'Hospital') {
+    const dischargeErrors: { [field: string]: string } = {};
+    if (!values.discharge.date) {
+      dischargeErrors.date = required;
+    } else {
+      if (!isDate(values.discharge.date)) {
+        dischargeErrors.date = 'Date is incorrect';
+      }
+    }
+    if (!values.discharge.criteria) {
+      dischargeErrors.criteria = required;
+    }
+    if (!isEmpty(dischargeErrors)) {
+      errors.discharge = dischargeErrors;
+    }
   }
 
-  if (!values.employerName) {
-    errors.employerName = required;
-  }
+  // Validations for OccupationalHealthcare option
 
-  const sickLeaveErrors: { [field: string]: string } = {};
-  if (!values.sickLeave.startDate) {
-    sickLeaveErrors.startDate = required;
-  } else {
-    if (!isDate(values.sickLeave.startDate)) {
+  if (values.type === 'OccupationalHealthcare') {
+    if (!values.employerName) {
+      errors.employerName = required;
+    }
+    const sickLeaveErrors: { [field: string]: string } = {};
+    if (values.sickLeave.startDate && !isDate(values.sickLeave.startDate)) {
       sickLeaveErrors.startDate = 'Date is incorrect';
     }
-  }
-  if (!values.sickLeave.endDate) {
-    sickLeaveErrors.endDate = required;
-  } else {
-    if (!isDate(values.sickLeave.endDate)) {
+    if (values.sickLeave.endDate && !isDate(values.sickLeave.endDate)) {
       sickLeaveErrors.endDate = 'Date is incorrect';
     }
-  }
-  if (!isEmpty(sickLeaveErrors)) {
-    errors.sickLeave = sickLeaveErrors;
+    if (!isEmpty(sickLeaveErrors)) {
+      errors.sickLeave = sickLeaveErrors;
+    }
   }
 
   return errors;
