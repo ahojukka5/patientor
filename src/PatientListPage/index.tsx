@@ -48,7 +48,7 @@ const PatientListPage: React.FC = () => {
       <Container textAlign="center">
         <h3>Patient list</h3>
       </Container>
-      <Table celled selectable>
+      <Table celled selectable unstackable>
         <Table.Header>
           <Table.Row>
             <Table.HeaderCell>Name</Table.HeaderCell>
