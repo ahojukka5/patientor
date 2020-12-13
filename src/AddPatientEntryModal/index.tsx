@@ -22,13 +22,6 @@ import {
 
 type NewEntry = NewHealthCheckEntry | NewHospitalEntry;
 
-interface Props {
-  modalOpen: boolean;
-  onClose: () => void;
-  onSubmit: (values: NewEntry) => void;
-  error?: string;
-}
-
 const getInitialValues = () => {
   return {
     date: new Date().toISOString().slice(0, 10),
@@ -49,27 +42,36 @@ const getInitialValues = () => {
   };
 };
 
-export const NewEntryForm: React.FC = () => {
+const useDiagnoses = () => {
   const [{ diagnoses }] = useStateValue();
+  const stateOptions = Object.values(diagnoses).map((diagnosis) => {
+    return {
+      key: diagnosis.code,
+      text: `${diagnosis.name} (${diagnosis.code})`,
+      value: diagnosis.code,
+    };
+  });
+  return stateOptions;
+};
 
+export interface FormProps {
+  onSubmit: (values: NewEntry) => void;
+  onCancel: () => void;
+}
+
+export const NewEntryForm: React.FC<FormProps> = ({ onCancel }) => {
   const formik = useFormik({
     initialValues: getInitialValues(),
     onSubmit: (values) => {
       alert(JSON.stringify(values, null, 2));
     },
   });
-
-  const stateOptions = Object.values(diagnoses).map((diagnosis) => ({
-    key: diagnosis.code,
-    text: `${diagnosis.name} (${diagnosis.code})`,
-    value: diagnosis.code,
-  }));
-
+  const diagnoses = useDiagnoses();
   const json = JSON.stringify(formik.values, null, 2);
   console.log(json);
 
   return (
-    <Form>
+    <Form onSubmit={formik.handleSubmit}>
       <Header as="h4">General information</Header>
       <Form.Field required>
         <label>Date</label>
@@ -99,7 +101,6 @@ export const NewEntryForm: React.FC = () => {
           value={formik.values.description}
         />
       </Form.Field>
-
       <Form.Group inline>
         <label>Type of visit</label>
         <Form.Field
@@ -130,7 +131,6 @@ export const NewEntryForm: React.FC = () => {
           checked={formik.values.type === 'OccupationalHealthcare'}
         />
       </Form.Group>
-
       <Divider />
       <Form.Field required>
         <label>Health check rating</label>
@@ -143,7 +143,6 @@ export const NewEntryForm: React.FC = () => {
           value={formik.values.healthCheckRating}
         />
       </Form.Field>
-
       <Form.Field required>
         <label>Diagnoses</label>
         <Dropdown
@@ -153,13 +152,12 @@ export const NewEntryForm: React.FC = () => {
           multiple
           search
           selection
-          options={stateOptions}
+          options={diagnoses}
           onChange={(_, data) => {
             formik.setFieldValue('diagnosisCodes', data.value);
           }}
         />
       </Form.Field>
-
       <Header as="h4">Discharge</Header>
       <Form.Field required>
         <label>Date</label>
@@ -179,17 +177,15 @@ export const NewEntryForm: React.FC = () => {
           value={formik.values.discharge.criteria}
         />
       </Form.Field>
-
       <Form.Field required>
         <label>Employer</label>
         <Input
-          name="employer"
+          name="employerName"
           placeholder="Employer"
           onChange={formik.handleChange}
           value={formik.values.employerName}
         />
       </Form.Field>
-
       <Form.Field control={Checkbox} label="Sick leave" />
       <Form.Group inline>
         <Form.Field required>
@@ -211,17 +207,15 @@ export const NewEntryForm: React.FC = () => {
           />
         </Form.Field>
       </Form.Group>
-
       <Divider />
       The following JSON data will be sent to backend:
       <Segment>
         <pre>{json}</pre>
       </Segment>
       <Divider />
-
       <Grid>
         <Grid.Column floated="left" width={5}>
-          <Button type="button" color="red">
+          <Button type="button" color="red" onClick={onCancel}>
             Cancel
           </Button>
         </Grid.Column>
@@ -235,17 +229,24 @@ export const NewEntryForm: React.FC = () => {
   );
 };
 
-export const AddPatientEntryModal = ({ modalOpen, onClose, error }: Props) => (
-  <Modal
-    open={modalOpen || !modalOpen}
-    onClose={onClose}
-    centered={false}
-    closeIcon
-  >
+interface ModalProps {
+  modalOpen: boolean;
+  onClose: () => void;
+  onSubmit: (values: NewEntry) => void;
+  error?: string;
+}
+
+export const AddPatientEntryModal = ({
+  modalOpen,
+  onSubmit,
+  onClose,
+  error,
+}: ModalProps) => (
+  <Modal open={modalOpen} onClose={onClose} centered={false} closeIcon>
     <Modal.Header>Add a new entry</Modal.Header>
     <Modal.Content>
       {error && <Segment inverted color="red">{`Error: ${error}`}</Segment>}
-      <NewEntryForm />
+      <NewEntryForm onSubmit={onSubmit} onCancel={onClose} />
     </Modal.Content>
   </Modal>
 );

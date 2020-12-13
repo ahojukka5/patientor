@@ -71,4 +71,4 @@ export type NewHealthCheckEntry = Omit<HealthCheckEntry, 'id'>;
 export type NewEntry =
   | NewHospitalEntry
   | NewOccupationalHealthcareEntry
-  | Omit<HealthCheckEntry, 'id'>;
+  | NewHealthCheckEntry;
