@@ -296,87 +296,104 @@ export const NewEntryForm: React.FC<FormProps> = (props) => {
         />
       </Form.Group>
       <Divider />
-      <Form.Field required>
-        <label>Health check rating</label>
-        <Form.Input
-          name="healthCheckRating"
-          type="number"
-          min={0}
-          max={3}
-          onChange={formik.handleChange}
-          value={formik.values.healthCheckRating}
-          error={formik.errors.healthCheckRating}
-        />
-      </Form.Field>
-      <Form.Field>
-        <label>Diagnoses</label>
-        <Dropdown
-          id="diagnosisCodes"
-          name="diagnosisCodes"
-          fluid
-          multiple
-          search
-          selection
-          options={diagnoses}
-          onChange={(_, data) => {
-            formik.setFieldValue('diagnosisCodes', data.value);
-          }}
-        />
-      </Form.Field>
-      <Header as="h4">Discharge</Header>
-      <Form.Field required>
-        <label>Date</label>
-        <Form.Input
-          name="discharge['date']"
-          placeholder="YYYY-MM-DD"
-          onChange={formik.handleChange}
-          value={formik.values.discharge.date}
-          error={formik.errors.discharge && formik.errors.discharge.date}
-        />
-      </Form.Field>
-      <Form.Field required>
-        <label>Criteria</label>
-        <Form.Input
-          name="discharge['criteria']"
-          placeholder="Criteria"
-          onChange={formik.handleChange}
-          value={formik.values.discharge.criteria}
-          error={formik.errors.discharge && formik.errors.discharge.criteria}
-        />
-      </Form.Field>
-      <Form.Field required>
-        <label>Employer</label>
-        <Form.Input
-          name="employerName"
-          placeholder="Employer"
-          onChange={formik.handleChange}
-          value={formik.values.employerName}
-          error={formik.errors.employerName}
-        />
-      </Form.Field>
-      <Form.Field control={Checkbox} label="Sick leave" />
-      <Form.Group inline>
+      {formik.values.type === 'HealthCheck' && (
         <Form.Field required>
-          <label>Start date</label>
+          <label>Health check rating</label>
           <Form.Input
-            name="sickLeave['startDate']"
-            placeholder="YYYY-MM-DD"
+            name="healthCheckRating"
+            type="number"
             onChange={formik.handleChange}
-            value={formik.values.sickLeave.startDate}
-            error={formik.errors.sickLeave && formik.errors.sickLeave.startDate}
+            value={formik.values.healthCheckRating}
+            error={formik.errors.healthCheckRating}
           />
         </Form.Field>
-        <Form.Field required>
-          <label>End date</label>
-          <Form.Input
-            name="sickLeave['endDate']"
-            placeholder="YYYY-MM-DD"
-            onChange={formik.handleChange}
-            value={formik.values.sickLeave.endDate}
-            error={formik.errors.sickLeave && formik.errors.sickLeave.endDate}
+      )}
+      {(formik.values.type === 'Hospital' ||
+        formik.values.type === 'OccupationalHealthcare') && (
+        <Form.Field>
+          <label>Diagnoses</label>
+          <Dropdown
+            id="diagnosisCodes"
+            name="diagnosisCodes"
+            fluid
+            multiple
+            search
+            selection
+            options={diagnoses}
+            onChange={(_, data) => {
+              formik.setFieldValue('diagnosisCodes', data.value);
+            }}
           />
         </Form.Field>
-      </Form.Group>
+      )}
+      {formik.values.type === 'Hospital' && (
+        <>
+          <Header as="h4">Discharge</Header>
+          <Form.Field required>
+            <label>Date</label>
+            <Form.Input
+              name="discharge['date']"
+              placeholder="YYYY-MM-DD"
+              onChange={formik.handleChange}
+              value={formik.values.discharge.date}
+              error={formik.errors.discharge && formik.errors.discharge.date}
+            />
+          </Form.Field>
+          <Form.Field required>
+            <label>Criteria</label>
+            <Form.Input
+              name="discharge['criteria']"
+              placeholder="Criteria"
+              onChange={formik.handleChange}
+              value={formik.values.discharge.criteria}
+              error={
+                formik.errors.discharge && formik.errors.discharge.criteria
+              }
+            />
+          </Form.Field>
+        </>
+      )}
+      {formik.values.type === 'OccupationalHealthcare' && (
+        <>
+          <Form.Field required>
+            <label>Employer</label>
+            <Form.Input
+              name="employerName"
+              placeholder="Employer"
+              onChange={formik.handleChange}
+              value={formik.values.employerName}
+              error={formik.errors.employerName}
+            />
+          </Form.Field>
+          <Form.Field control={Checkbox} label="Sick leave" />
+          <Form.Group inline>
+            <Form.Field required>
+              <label>Start date</label>
+              <Form.Input
+                name="sickLeave['startDate']"
+                placeholder="YYYY-MM-DD"
+                onChange={formik.handleChange}
+                value={formik.values.sickLeave.startDate}
+                error={
+                  formik.errors.sickLeave && formik.errors.sickLeave.startDate
+                }
+              />
+            </Form.Field>
+            <Form.Field required>
+              <label>End date</label>
+              <Form.Input
+                name="sickLeave['endDate']"
+                placeholder="YYYY-MM-DD"
+                onChange={formik.handleChange}
+                value={formik.values.sickLeave.endDate}
+                error={
+                  formik.errors.sickLeave && formik.errors.sickLeave.endDate
+                }
+              />
+            </Form.Field>
+          </Form.Group>
+        </>
+      )}
       <Divider />
       The following JSON data will be sent to backend:
       <Segment>
@@ -412,12 +429,7 @@ export const AddPatientEntryModal = ({
   onClose,
   error,
 }: ModalProps) => (
-  <Modal
-    open={modalOpen}
-    onClose={onClose}
-    centered={false}
-    closeIcon
-  >
+  <Modal open={modalOpen} onClose={onClose} centered={false} closeIcon>
     <Modal.Header>Add a new entry</Modal.Header>
     <Modal.Content>
       {error && <Segment inverted color="red">{`Error: ${error}`}</Segment>}
