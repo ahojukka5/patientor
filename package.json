@@ -2,7 +2,7 @@
   "name": "patientor",
   "version": "1.0.0",
   "private": false,
-  "homepage": "https://patientor.ahojukka5.com",
+  "homepage": "http://ahojukka5.github.io/patientor",
   "dependencies": {
     "axios": "^0.19.0",
     "formik": "^2.0.6",
