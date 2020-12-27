@@ -1,22 +1,22 @@
 {
   "files": {
-    "main.js": "/static/js/main.3545ee20.chunk.js",
-    "main.js.map": "/static/js/main.3545ee20.chunk.js.map",
-    "runtime-main.js": "/static/js/runtime-main.7c9d0624.js",
-    "runtime-main.js.map": "/static/js/runtime-main.7c9d0624.js.map",
-    "static/css/2.5f2f5f0e.chunk.css": "/static/css/2.5f2f5f0e.chunk.css",
-    "static/js/2.04ebfe9f.chunk.js": "/static/js/2.04ebfe9f.chunk.js",
-    "static/js/2.04ebfe9f.chunk.js.map": "/static/js/2.04ebfe9f.chunk.js.map",
-    "index.html": "/index.html",
-    "precache-manifest.b19836cad5d2b6b71fbdc3afb934504e.js": "/precache-manifest.b19836cad5d2b6b71fbdc3afb934504e.js",
-    "service-worker.js": "/service-worker.js",
-    "static/css/2.5f2f5f0e.chunk.css.map": "/static/css/2.5f2f5f0e.chunk.css.map",
-    "static/js/2.04ebfe9f.chunk.js.LICENSE": "/static/js/2.04ebfe9f.chunk.js.LICENSE",
-    "static/media/semantic.min.css": "/static/media/outline-icons.ef60a4f6.woff"
+    "main.js": "/patientor/static/js/main.3545ee20.chunk.js",
+    "main.js.map": "/patientor/static/js/main.3545ee20.chunk.js.map",
+    "runtime-main.js": "/patientor/static/js/runtime-main.42d2e59d.js",
+    "runtime-main.js.map": "/patientor/static/js/runtime-main.42d2e59d.js.map",
+    "static/css/2.310f3966.chunk.css": "/patientor/static/css/2.310f3966.chunk.css",
+    "static/js/2.04ebfe9f.chunk.js": "/patientor/static/js/2.04ebfe9f.chunk.js",
+    "static/js/2.04ebfe9f.chunk.js.map": "/patientor/static/js/2.04ebfe9f.chunk.js.map",
+    "index.html": "/patientor/index.html",
+    "precache-manifest.9908b5eafa4bd31996b8f9b2e08a8db7.js": "/patientor/precache-manifest.9908b5eafa4bd31996b8f9b2e08a8db7.js",
+    "service-worker.js": "/patientor/service-worker.js",
+    "static/css/2.310f3966.chunk.css.map": "/patientor/static/css/2.310f3966.chunk.css.map",
+    "static/js/2.04ebfe9f.chunk.js.LICENSE": "/patientor/static/js/2.04ebfe9f.chunk.js.LICENSE",
+    "static/media/semantic.min.css": "/patientor/static/media/outline-icons.ef60a4f6.woff"
   },
   "entrypoints": [
-    "static/js/runtime-main.7c9d0624.js",
-    "static/css/2.5f2f5f0e.chunk.css",
+    "static/js/runtime-main.42d2e59d.js",
+    "static/css/2.310f3966.chunk.css",
     "static/js/2.04ebfe9f.chunk.js",
     "static/js/main.3545ee20.chunk.js"
   ]
