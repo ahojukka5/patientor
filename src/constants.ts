@@ -5,7 +5,7 @@ declare const process: {
 };
 
 const prod = {
-  apiBaseUrl: 'https://patientor-backend.ahojukka5.com/api',
+  apiBaseUrl: 'https://ahojukka5-patientor-backend.herokuapp.com/api',
 };
 
 const dev = {
