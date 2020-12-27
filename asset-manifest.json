@@ -1,14 +1,14 @@
 {
   "files": {
-    "main.js": "/patientor/static/js/main.3545ee20.chunk.js",
-    "main.js.map": "/patientor/static/js/main.3545ee20.chunk.js.map",
+    "main.js": "/patientor/static/js/main.692acf9e.chunk.js",
+    "main.js.map": "/patientor/static/js/main.692acf9e.chunk.js.map",
     "runtime-main.js": "/patientor/static/js/runtime-main.42d2e59d.js",
     "runtime-main.js.map": "/patientor/static/js/runtime-main.42d2e59d.js.map",
     "static/css/2.310f3966.chunk.css": "/patientor/static/css/2.310f3966.chunk.css",
     "static/js/2.04ebfe9f.chunk.js": "/patientor/static/js/2.04ebfe9f.chunk.js",
     "static/js/2.04ebfe9f.chunk.js.map": "/patientor/static/js/2.04ebfe9f.chunk.js.map",
     "index.html": "/patientor/index.html",
-    "precache-manifest.9908b5eafa4bd31996b8f9b2e08a8db7.js": "/patientor/precache-manifest.9908b5eafa4bd31996b8f9b2e08a8db7.js",
+    "precache-manifest.57a5e5b2b3c948386ca99a7351db0aab.js": "/patientor/precache-manifest.57a5e5b2b3c948386ca99a7351db0aab.js",
     "service-worker.js": "/patientor/service-worker.js",
     "static/css/2.310f3966.chunk.css.map": "/patientor/static/css/2.310f3966.chunk.css.map",
     "static/js/2.04ebfe9f.chunk.js.LICENSE": "/patientor/static/js/2.04ebfe9f.chunk.js.LICENSE",
@@ -18,6 +18,6 @@
     "static/js/runtime-main.42d2e59d.js",
     "static/css/2.310f3966.chunk.css",
     "static/js/2.04ebfe9f.chunk.js",
-    "static/js/main.3545ee20.chunk.js"
+    "static/js/main.692acf9e.chunk.js"
   ]
 }

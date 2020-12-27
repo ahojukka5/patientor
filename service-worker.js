@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "/patientor/precache-manifest.9908b5eafa4bd31996b8f9b2e08a8db7.js"
+  "/patientor/precache-manifest.57a5e5b2b3c948386ca99a7351db0aab.js"
 );
 
 self.addEventListener('message', (event) => {

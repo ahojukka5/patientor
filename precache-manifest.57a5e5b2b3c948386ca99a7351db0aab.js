@@ -1,6 +1,6 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "f7566eb3540df97fc14432a19cd71a1c",
+    "revision": "3144d816c54f09b6e6c992c0cb799a1d",
     "url": "/patientor/index.html"
   },
   {
@@ -16,8 +16,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/patientor/static/js/2.04ebfe9f.chunk.js.LICENSE"
   },
   {
-    "revision": "28cab3b782a0cc66ea75",
-    "url": "/patientor/static/js/main.3545ee20.chunk.js"
+    "revision": "1ed7cdd763d9048e0ce1",
+    "url": "/patientor/static/js/main.692acf9e.chunk.js"
   },
   {
     "revision": "e10938fa79a8dfc58a94",
